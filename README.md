@@ -10,6 +10,8 @@ see [example](example/main.c)
 * [curl](http://curl.haxx.se)
 * [libxml2](http://www.xmlsoft.org)
 
+## CMS Compatibility
+Tested with xibo-cms-1.7.4, xmds version 4, on Ubuntu 14.04 Host.
 
 ## Build and Install
 * clone

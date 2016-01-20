@@ -330,6 +330,9 @@ int xmdsSubmitScreenshotFile(xmdsConfig cfg, const char *path) {
 
     retval = 0;
     file = fopen(path, "r");
+    if(!file)
+        return 0;
+
     fseek(file, 0, SEEK_END);
     len = ftell(file);
     fseek(file, 0, SEEK_SET);

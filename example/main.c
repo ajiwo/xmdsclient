@@ -62,9 +62,18 @@ void test_get_file() {
     size_t downloaded;
 
     printf("get file\n");
+    /* /tmp is the value of cfg.saveDir */
+
+    /* the file will be saved as /tmp/21.media */
     downloaded = xmdsGetFile(cfg, 21, "media", 0, 19304423);
+    /* or, to save the file as /tmp/primary-ads.mp4 */
+    /* downloaded = xmdsGetFileNamed(cfg, 21, "media", 0, 19304423, "primary-ads.mp4"); */
     printf("  media downloaded: %ld bytes\n", (long)downloaded);
+
+    /* the file will be saved as 7.layout */
     downloaded = xmdsGetFile(cfg, 7, "layout", 0, 828);
+    /* or, to save the file as /tmp/default.xlf */
+    /* downloaded = xmdsGetFileNamed(cfg, 7, "layout", 0, 828, "default.xlf"); */
     printf("  layout downloaded: %ld bytes\n", (long)downloaded);
 }
 
@@ -238,11 +247,7 @@ void test_get_resource() {
        should be parsed by xlfparser */
     downloaded = xmdsGetResource(cfg, 7, "4b3e4d5d7814db4b29c2b12b195f8739", "56976ba48632f");
 
-    if(downloaded) {
-        printf("test_get_resource downloaded %ld bytes\n", (long) downloaded);
-    } else {
-        printf("test_get_resource downloaded %ld bytes\n", (long) downloaded);
-    }
+    printf("test_get_resource downloaded %ld bytes\n", (long) downloaded);
 }
 
 void test_notify_status() {
@@ -258,7 +263,7 @@ void test_notify_status() {
 }
 
 void test_screenshot() {
-    /* this is the core function: xmdsSubmitScreenshot(cfg, veryLongBase64EncodedString)  */
+    /* the core function: xmdsSubmitScreenshot(cfg, veryLongBase64EncodedString)  */
     /* this example is using the xmdsSubmitScreenshotFile(cfg, pathToFile) variant. */
 
     char path[129];
@@ -286,7 +291,6 @@ int main(void)
     test_get_resource();
     test_notify_status();
     test_screenshot();
-    /* TODO: automated xibo-cms install */
     return 0;
 }
 
