@@ -4,7 +4,7 @@
 [xmds](http://xibo.org.uk/manual-tempel/en/xmds.html) (Xibo Media Distribution Service) client.
 
 ## Usage example.
-
+see [example](example/main.c)
 
 ## Dependencies
 * [curl](http://curl.haxx.se)
