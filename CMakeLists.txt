@@ -22,10 +22,10 @@ set(xmdsclient_headers
 )
 
 set(xmdsclient_install_headers
-    include/xmdsclient/xmds.h
-    include/xmdsclient/xmds-node.h
-    include/xmdsclient/xmds-util.h
-    include/xmdsclient/xmds-params.h
+    xmds.h
+    xmds-node.h
+    xmds-util.h
+    xmds-params.h
 )
 
 set(xmdsclient_srcs

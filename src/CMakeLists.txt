@@ -16,8 +16,13 @@ install(
     DESTINATION lib
     PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ WORLD_READ OWNER_EXECUTE GROUP_EXECUTE WORLD_EXECUTE
 )
+
+foreach(hfile ${xmdsclient_install_headers})
+    set(hfiles ${hfiles} "${CMAKE_SOURCE_DIR}/include/xmdsclient/${hfile}")
+endforeach()
+
 install(
-    FILES ${xmdsclient_install_headers}
+    FILES ${hfiles}
     DESTINATION include/xmdsclient
     PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ WORLD_READ
 )
