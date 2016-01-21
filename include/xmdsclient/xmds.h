@@ -8,7 +8,10 @@ typedef struct _xmdsConfig {
     const char *hardwareKey;      /*!< */
     const char *url;              /*!< */
     const char *saveDir;          /*!< */
+    long maxChunk;
 } xmdsConfig;
+
+#define XMDS_MAX_CHUNK 1234567
 
 #ifdef	__cplusplus
 extern "C" {

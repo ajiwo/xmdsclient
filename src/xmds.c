@@ -69,11 +69,7 @@ static size_t _getPartialFile(xmdsConfig cfg, getFileParam param, const char *fi
     size_t downloaded;
     long remaining;
 
-#ifdef XMDS_MAX_CHUNK_SIZE
-    const long partial_chunk = XMDS_MAX_CHUNK_SIZE;
-#else
-    const long partial_chunk = 1234567;
-#endif
+    long partial_chunk;
 
     param0.key = param.key;
     param0.fileId = param.fileId;
@@ -83,6 +79,7 @@ static size_t _getPartialFile(xmdsConfig cfg, getFileParam param, const char *fi
     offset = 0;
     downloaded = 0;
 
+    partial_chunk = cfg.maxChunk ? cfg.maxChunk : XMDS_MAX_CHUNK;
 
     if(filename) {
         sprintf(outname, "%s/%s", cfg.saveDir, filename);

@@ -15,6 +15,8 @@ void set_config() {
     cfg.hardwareKey = "some-l0n9-device-unique-identifier";
     cfg.url = "http://localhost:8000/xmds.php?v=4";
     cfg.saveDir = "/tmp";
+    cfg.maxChunk = 1000000;
+
 }
 
 void test_register_display() {
