@@ -223,7 +223,7 @@ void test_media_inventory() {
 
     sprintf(path, "%s/%s", cfg.saveDir, "21.media");
 
-    file_md5sum(md5sum, path);
+    xmdsMd5sumFile(md5sum, path);
 
     node = mediaInvXmlNew();
     memset(&inv, '\0', sizeof(mediaInventoryXml));

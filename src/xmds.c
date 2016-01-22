@@ -5,9 +5,16 @@
 #include "mbedtls-base64.h"
 #include "xmds-params-func.h"
 #include "xmds-soap.h"
-#include "xmds-util.h"
 #include "xmds.h"
 
+
+const char *libXmdsVersion(int *major, int *minor, int *patch) {
+    *major = 0;
+    *minor = 0;
+    *patch = 1;
+
+    return "development";
+}
 
 xmdsNode *xmdsRegisterDisplay(xmdsConfig cfg, const char *name, const char *os, const char *type, const char *version, int code, const char *mac) {
     registerDisplayParam param;
@@ -371,6 +378,10 @@ int xmdsFree(xmdsNode *node) {
     }
 
     return retval;
+}
+
+void xmdsMd5sumFile(char *md5sum, const char *path) {
+    file_md5sum(md5sum, path);
 }
 
 registerDisplayEntry *xmdsRegisterDisplayEntry(xmdsNode *node, int *dlen) {

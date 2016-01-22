@@ -24,7 +24,6 @@ set(xmdsclient_headers
 set(xmdsclient_install_headers
     xmds.h
     xmds-node.h
-    xmds-util.h
     xmds-params.h
 )
 
@@ -38,7 +37,6 @@ set(xmdsclient_srcs
     soap-nsinfo.c
     xml2-xmds-request.c
     xml2-xmds-response.c
-    xmds-params.c
     xmds-params-func.c
     mbedtls-base64.c
     mbedtls-md5.c

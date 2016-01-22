@@ -17,6 +17,8 @@ typedef struct _xmdsConfig {
 extern "C" {
 #endif
 
+/* version */
+const char *libXmdsVersion(int *major, int *minor, int *patch);
 
 /* core xmds verbs */
 xmdsNode *xmdsRegisterDisplay(xmdsConfig cfg, const char *name, const char *os, const char *type, const char *version, int code, const char *mac);
@@ -40,7 +42,7 @@ int xmdsMediaInventoryNode(xmdsConfig cfg, xmdsNode *inv);
 size_t xmdsGetResourceFile(xmdsConfig cfg, int layout, const char *media, const char *region, const char *path);
 
 int xmdsFree(xmdsNode *node);
-
+void xmdsMd5sumFile(char *md5sum, const char *path);
 registerDisplayEntry *xmdsRegisterDisplayEntry(xmdsNode *node, int *dlen);
 registerDisplayDetail *xmdsRegisterDisplayDetail(registerDisplayEntry *entry, int index);
 requiredFilesEntry *xmdsRequiredFilesEntry(xmdsNode *node, int index);
