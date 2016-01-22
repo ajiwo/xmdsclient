@@ -1,5 +1,14 @@
 #include "xmds-soap.h"
 
+/*
+TODO: consider curl callback for XMDS_GET_FILE request, extract base64 encoded
+      string inside the callback function, rather than waiting the callback
+      to finish then extract big (and accumulated) response content.
+      this will allow bigger XMDS_MAX_CHUNK value while keeping memory usage low
+      but with slighly higher computing usage.
+*/
+
+
 void *send_request(const char*url, xmdsRequestType type, void *param) {
     char *req_string;
     transportResponse resp;

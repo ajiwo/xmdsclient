@@ -239,46 +239,6 @@ void *build_reqfiles_response(xmlNode *response_node) {
     return entry_node;
 }
 
-#if 0
-void *build_getfile_response0(xmlNode *response_node) {
-    xmlChar *xcontent;
-    char *retval;
-
-    if(!xmlStrEqual(response_node->name, BAD_CAST "GetFileResponse")) {
-        return NULL;
-    }
-
-    response_node = xmlFirstElementChild(response_node);
-
-    if(!xmlStrEqual(response_node->name, BAD_CAST "file")) {
-        return NULL;
-    }
-
-    xcontent = xmlNodeGetContent(response_node);
-
-    retval = _xmds_strdup0((const char *)xcontent);
-    xmlFree(xcontent);
-    return retval;
-}
-
-size_t tsr_getfile_cb(void *contents, size_t size, size_t nmemb, void *userp) {
-    size_t realsize = size * nmemb;
-    transportResponse *mem = (transportResponse *)userp;
-
-    mem->memory = realloc(mem->memory, mem->size + realsize + 1);
-    if(mem->memory == NULL) {
-        /* out of memory! */
-        return 0;
-    }
-
-    memcpy(&(mem->memory[mem->size]), contents, realsize);
-    mem->size += realsize;
-    mem->memory[mem->size] = 0;
-
-    return realsize;
-}
-#endif
-
 void *build_getfile_response(transportResponse resp) {
     char *retval;
     transportResponse *tr;
