@@ -1,7 +1,6 @@
 #ifndef XMDS_H
 #define XMDS_H
 #include "xmds-params.h"
-#include "xmds-util.h"
 
 typedef struct _xmdsConfig {
     const char *serverKey;        /*!< */

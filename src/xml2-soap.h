@@ -2,6 +2,7 @@
 #define XMDSSOAP
 
 #include "xmds-params.h"
+#include "xmds-util.h"
 #include "soap-nsinfo.h"
 #include <stdlib.h>
 #include <string.h>

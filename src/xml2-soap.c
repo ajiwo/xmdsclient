@@ -57,18 +57,23 @@ xmlNode *soap_new_base64binary_param(const soapEnvelope *evp, const xmlChar *nam
 }
 
 xmlNode *soap_new_int_param(const soapEnvelope *evp, const xmlChar *name, const int value) {
-    char cvalue[12];
+    char *cvalue;
     xmlChar *xvalue;
     xmlNode *node;
+    unsigned short cvalue_len;
 
+    cvalue_len = digitlen(value);
+    cvalue = malloc(cvalue_len + 1);
     sprintf(cvalue, "%d", value);
     xvalue = xmlStrdup(BAD_CAST cvalue);
+    free(cvalue);
 
     node = soap_new_param0(evp, name, BAD_CAST "int", xvalue);
     xmlFree(xvalue);
 
     return node;
 }
+
 /*
 xmlNode *soap_new_long_param(const soapEnvelope *evp, const xmlChar *name, const long value) {
     char cvalue[12];
@@ -83,19 +88,25 @@ xmlNode *soap_new_long_param(const soapEnvelope *evp, const xmlChar *name, const
     return node;
 }
 */
+
 xmlNode *soap_new_xibodouble_param(const soapEnvelope *evp, const xmlChar *name, const xibodouble value) {
-    char cvalue[12];
+    char *cvalue;
     xmlChar *xvalue;
     xmlNode *node;
+    unsigned short cvalue_len;
 
-    sprintf(cvalue, "%ld", value);
+    cvalue_len = digitlen(value);
+    cvalue = malloc(cvalue_len + 1);
+    sprintf(cvalue, "%lu", value);
     xvalue = xmlStrdup(BAD_CAST cvalue);
+    free(cvalue);
 
     node = soap_new_param0(evp, name, BAD_CAST "double", xvalue);
     xmlFree(xvalue);
 
     return node;
 }
+
 /*
 xmlNode *soap_new_double_param(const soapEnvelope *evp, const xmlChar *name, const double value) {
     char cvalue[16];

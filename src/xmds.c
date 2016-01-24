@@ -5,6 +5,7 @@
 #include "mbedtls-base64.h"
 #include "xmds-params-func.h"
 #include "xmds-soap.h"
+#include "xmds-util.h"
 #include "xmds.h"
 
 

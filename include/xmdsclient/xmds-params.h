@@ -92,7 +92,7 @@ typedef struct _registerDisplayDetail {
 
 /* those 'double' above seem like 'long' to me */
 #ifndef xibodouble
-#define xibodouble long
+#define xibodouble unsigned long
 #endif
 
 typedef struct _getFileParam {

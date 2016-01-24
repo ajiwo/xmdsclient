@@ -98,3 +98,16 @@ void file_md5sum(char dst[32], const char *path) {
     }
 
 }
+
+unsigned short digitlen(long n) {
+    short len = 1;
+
+    if(n < 0) {
+        n = -n;
+        len++;
+    }
+
+    while((n /= 10) > 0) len++;
+
+    return len;
+}
