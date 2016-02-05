@@ -31,7 +31,10 @@ static xmdsNode *_regdisplay_detail(xmlNode *xnode) {
     xmlChar *xtmp;
     registerDisplayDetail detail;
 
-    fnode = registerDisplayDetail_new();
+    fnode = NULL;
+    if(xnode)
+        fnode = registerDisplayDetail_new();
+
     while(xnode) {
         if(xnode->type != XML_ELEMENT_NODE) {
             xnode = xnode->next;
