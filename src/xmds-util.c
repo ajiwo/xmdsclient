@@ -111,3 +111,25 @@ unsigned short digitlen(long n) {
 
     return len;
 }
+
+int str_tolower(char *src) {
+    int i, c;
+
+    for(i = 0; (c = src[i]) != '\0'; i++) {
+        if(c >= 'A' && c <= 'Z')
+            src[i] = c + 'a' - 'A';
+    }
+
+    return i;
+}
+
+int str_toupper(char *src) {
+    int i, c;
+
+    for(i = 0; (c = src[i]) != '\0'; i++) {
+        if(c >= 'a' && c <= 'z')
+            src[i] = c + 'A' -'a';
+    }
+
+    return i;
+}
