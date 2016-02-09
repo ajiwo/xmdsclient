@@ -33,7 +33,7 @@ void test_register_display() {
         printf("reg_display:");
         printf("  status '%d, code '%s', message '%s'\n", entry->status, entry->code, entry->message);
         for(i = 0; i < nd; i++) {
-            detail = xmdsRegisterDisplayDetail(entry, i);
+            detail = xmdsRegisterDisplayDetail(entry, &i, NULL);
             if(detail) {
                 printf("  %s(%s) = '%s'\n", detail->name, detail->type, detail->value);
             }

@@ -90,7 +90,7 @@ static size_t _getPartialFile(xmdsConfig cfg, getFileParam param, const char *fi
     partial_chunk = cfg.maxChunk ? cfg.maxChunk : XMDS_MAX_CHUNK;
 
     if(filename) {
-        sprintf(outname, "%s/%s", cfg.saveDir, filename);
+        sprintf(outname, "%s", filename);
     } else {
         sprintf(outname, "%s/%d.%s", cfg.saveDir, param.fileId, param.fileType);
     }
@@ -397,14 +397,40 @@ registerDisplayEntry *xmdsRegisterDisplayEntry(xmdsNode *node, int *dlen) {
     return entry;
 }
 
-registerDisplayDetail *xmdsRegisterDisplayDetail(registerDisplayEntry *entry, int index) {
+registerDisplayDetail *xmdsRegisterDisplayDetail(registerDisplayEntry *entry, int *index, const char *name) {
     xmdsNode *node;
     registerDisplayDetail *detail;
+    int i, len;
+    char *tmp1, *tmp2;
 
     detail = NULL;
     if(entry) {
-        node = xmdsNodeGet(entry->details, index);
-        detail = node->data;
+        if(name != NULL) {
+            *index = -1;
+            tmp1 = str_duplicate(name);
+            len = xmdsNodeLength(entry->details);
+            for(i = 0; i < len; i++) {
+                node = xmdsNodeGet(entry->details, i);
+                tmp2 = str_duplicate(((registerDisplayDetail *)(node->data))->name);
+                str_tolower(tmp1);
+                str_tolower(tmp2);
+                if(!strcmp(tmp1, tmp2)) {
+                    *index = i;
+                    free(tmp2);
+                    break;
+                }
+                free(tmp2);
+            }
+            free(tmp1);
+            if(*index < 0) {
+                detail = NULL;
+            } else {
+                detail = node->data;
+            }
+        } else {
+            node = xmdsNodeGet(entry->details, *index);
+            detail = node->data;
+        }
     }
 
     return detail;

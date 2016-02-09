@@ -43,7 +43,7 @@ size_t xmdsGetResourceFile(xmdsConfig cfg, int layout, const char *media, const 
 int xmdsFree(xmdsNode *node);
 void xmdsMd5sumFile(char *md5sum, const char *path);
 registerDisplayEntry *xmdsRegisterDisplayEntry(xmdsNode *node, int *dlen);
-registerDisplayDetail *xmdsRegisterDisplayDetail(registerDisplayEntry *entry, int index);
+registerDisplayDetail *xmdsRegisterDisplayDetail(registerDisplayEntry *entry, int *index, const char *name);
 requiredFilesEntry *xmdsRequiredFilesEntry(xmdsNode *node, int index);
 
 scheduleLayoutEntry *xmdsScheduleLayout(scheduleEntry *entry, int index);
