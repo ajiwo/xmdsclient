@@ -388,6 +388,7 @@ void xmdsMd5sumFile(char *md5sum, const char *path) {
 registerDisplayEntry *xmdsRegisterDisplayEntry(xmdsNode *node, int *dlen) {
     registerDisplayEntry *entry;
 
+    *dlen = -1;
     entry = NULL;
     if(node) {
         entry = node->data;
