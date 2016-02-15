@@ -57,10 +57,14 @@ static size_t _decodeAndSave(transportResponse *resp, const char *outname) {
     free(resp->memory);
     free(resp);
 
+    written = 0;
     file = fopen(outname, "a");
-    written = fwrite(data, 1, len, file);
-    free(data);
-    fclose(file);
+    if(file) {
+        written = fwrite(data, 1, len, file);
+        fflush(file);
+        free(data);
+        fclose(file);
+    }
 
     return written;
 }
