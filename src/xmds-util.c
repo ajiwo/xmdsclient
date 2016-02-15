@@ -79,7 +79,7 @@ void file_md5sum(char dst[32], const char *path) {
     unsigned char *data;
     unsigned char raw_md5sum[16];
 
-    memset(dst, '\0', sizeof(char));
+    memset(dst, '\0', 32);
     file = fopen(path, "r");
     if(file) {
         /* get file size for malloc arg */
