@@ -10,11 +10,11 @@
 
 
 const char *libXmdsVersion(int *major, int *minor, int *patch) {
-    *major = 0;
-    *minor = 0;
-    *patch = 1;
+    *major = XMDSCLIENT_VER_MAJOR;
+    *minor = XMDSCLIENT_VER_MINOR;
+    *patch = XMDSCLIENT_VER_PATCH;
 
-    return "development";
+    return XMDSCLIENT_VER_EXTRA;
 }
 
 xmdsNode *xmdsRegisterDisplay(xmdsConfig cfg, const char *name, const char *os, const char *type, const char *version, int code, const char *mac) {
