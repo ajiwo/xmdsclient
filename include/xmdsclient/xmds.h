@@ -9,8 +9,8 @@ typedef struct _xmdsConfig {
     const char *saveDir;            /*!< */
     long maxChunk;
     long cmsTzOffset;               /*!< CMS timezone to UTC offset in seconds,
-                                        UTC+1 will be 86400,
-                                        UTC-1 will be -86400 */
+                                        UTC+1 will be 3600,
+                                        UTC-1 will be -3600 */
     unsigned long collectInterval;  /*!< default collectInterval when CMS is unreachable */
 } xmdsConfig;
 
