@@ -3,10 +3,10 @@
 #include "xmds-params.h"
 
 typedef struct _xmdsConfig {
-    const char *serverKey;          /*!< */
-    const char *hardwareKey;        /*!< */
-    const char *url;                /*!< */
-    const char *saveDir;            /*!< */
+    char *serverKey;                /*!< */
+    char *hardwareKey;              /*!< */
+    char *url;                      /*!< */
+    char *saveDir;                  /*!< */
     long maxChunk;
     long cmsTzOffset;               /*!< CMS timezone to UTC offset in seconds,
                                         UTC+1 will be 3600,
@@ -15,6 +15,10 @@ typedef struct _xmdsConfig {
 } xmdsConfig;
 
 #define XMDS_MAX_CHUNK 1234567
+#define XMDS_COLLECT_INTERVAL 5
+void xmdsConfigInit(xmdsConfig *cfg);
+void xmdsConfigFree(xmdsConfig *cfg);
+
 
 #ifdef	__cplusplus
 extern "C" {

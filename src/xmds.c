@@ -9,6 +9,37 @@
 #include "xmds.h"
 
 
+void xmdsConfigInit(xmdsConfig *cfg) {
+    cfg->url = NULL;
+    cfg->serverKey = NULL;
+    cfg->hardwareKey = NULL;
+    cfg->saveDir = NULL;
+    cfg->maxChunk = XMDS_MAX_CHUNK;
+    cfg->collectInterval = XMDS_COLLECT_INTERVAL;
+    cfg->cmsTzOffset = 0;
+}
+
+void xmdsConfigFree(xmdsConfig *cfg) {
+    if(cfg) {
+        if(cfg->url) {
+            free(cfg->url);
+            cfg->url = NULL;
+        }
+        if(cfg->serverKey) {
+            free(cfg->serverKey);
+            cfg->serverKey = NULL;
+        }
+        if(cfg->hardwareKey) {
+            free(cfg->hardwareKey);
+            cfg->hardwareKey = NULL;
+        }
+        if(cfg->saveDir) {
+            free(cfg->saveDir);
+            cfg->saveDir = NULL;
+        }
+    }
+}
+
 const char *libXmdsVersion(int *major, int *minor, int *patch) {
     *major = XMDSCLIENT_VER_MAJOR;
     *minor = XMDSCLIENT_VER_MINOR;
