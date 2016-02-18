@@ -130,7 +130,7 @@ static size_t _getPartialFile(xmdsConfig cfg, getFileParam param, const char *fi
     }
 
     /* TODO: instead of deleting, add option to overwrite or continue last failed download */
-    unlink(outname);
+    remove(outname);
     if(param.chuckSize >= partial_chunk) {
         while(downloaded < param.chuckSize) {
             param0.chunkOffset = offset;
