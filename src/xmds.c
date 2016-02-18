@@ -91,19 +91,19 @@ static int _configFindValue(const char *src, const char *key, int *v_start, int 
     return *v_end - *v_start;
 }
 
-static char *_configGetString(const char *src, const char *key) {
-    int start, end, len;
+static char *_configGetString(int *len, const char *src, const char *key) {
+    int start, end;
     char *dst;
     int i;
 
     dst = NULL;
-    len = _configFindValue(src, key, &start, &end);
-    if(len > 0) {
-        dst = malloc(len + 1);
-        dst[len] = '\0';
+    *len = _configFindValue(src, key, &start, &end);
+    if(*len > 0) {
+        dst = malloc(*len + 1);
+        dst[*len] = '\0';
         /* copy src[start] to src[end] -> dst */
         for(i = 0;
-            i < len && (dst[i] = *(src + start + i));
+            i < *len && (dst[i] = *(src + start + i));
             i++);
 
     }
@@ -111,31 +111,37 @@ static char *_configGetString(const char *src, const char *key) {
     return dst;
 }
 
-static double _configGetNumber(const char *src, const char *key) {
+static double _configGetNumber(int *len, const char *src, const char *key) {
     char *value;
     double num;
 
+    num = 0;
     value = NULL;
-    value = _configGetString(src, key);
-    num = atof(value);
-    free(value);
+    value = _configGetString(len, src, key);
+    if(value) {
+        num = atof(value);
+        free(value);
+    }
     return num;
 }
 
-static double _configGetSeconds(const char *src, const char *key) {
+static double _configGetSeconds(int *len, const char *src, const char *key) {
     char *value;
     char *unit;
     double num;
 
-    value = _configGetString(src, key);
-    num = strtod(value, &unit);
+    num = 0;
+    value = _configGetString(len, src, key);
+    if(value) {
+        num = strtod(value, &unit);
 
-    if(unit[0] == 'h' || unit[0] == 'H')
-        num *= 3600;
-    else if(unit[0] == 'm' || unit[0] == 'm')
-        num *= 60;
+        if(unit[0] == 'h' || unit[0] == 'H')
+            num *= 3600;
+        else if(unit[0] == 'm' || unit[0] == 'm')
+            num *= 60;
 
-    free(value);
+        free(value);
+    }
     return num;
 }
 
@@ -150,19 +156,35 @@ void xmdsConfigInit(xmdsConfig *cfg) {
 }
 
 int xmdsConfigParse(xmdsConfig *cfg, const char *src) {
+    int len, found;
+    double num;
+    char *str;
 
-    cfg->url = _configGetString(src, "url");
-    cfg->serverKey = _configGetString(src, "serverKey");
-    cfg->hardwareKey = _configGetString(src, "hardwareKey");
-    cfg->saveDir = _configGetString(src, "saveDir");
-    cfg->maxChunk = _configGetNumber(src, "maxChunk");
-    cfg->collectInterval = _configGetSeconds(src, "collectInterval");
-    cfg->cmsTzOffset = _configGetSeconds(src, "cmsTzOffset");
+    found = 0;
 
-    return (cfg->url &&
-            cfg->serverKey &&
-            cfg->hardwareKey &&
-            cfg->saveDir);
+    if((str = _configGetString(&len, src, "url")))
+        cfg->url = str, found++;
+    if((str = _configGetString(&len, src, "serverKey")))
+        cfg->serverKey = str, found++;
+    if((str = _configGetString(&len, src, "hardwareKey")))
+        cfg->hardwareKey = str, found++;
+    if((str = _configGetString(&len, src, "saveDir")))
+        cfg->saveDir = str, found++;
+
+
+    num = _configGetNumber(&len,src, "maxChunk");
+    if(len > 0)
+        cfg->maxChunk = num, found++;
+
+    num = _configGetSeconds(&len,src, "collectInterval");
+    if(len > 0)
+        cfg->collectInterval = num, found++;
+
+    num = _configGetSeconds(&len,src, "cmsTzOffset");
+    if(len > 0)
+        cfg->cmsTzOffset = num, found++;
+
+    return found;
 }
 
 void xmdsConfigFree(xmdsConfig *cfg) {
