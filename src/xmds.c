@@ -108,7 +108,6 @@ static size_t _getPartialFile(xmdsConfig cfg, getFileParam param, const char *fi
 
 
     long offset;
-    long size;
     size_t downloaded;
     long remaining;
 
@@ -118,7 +117,6 @@ static size_t _getPartialFile(xmdsConfig cfg, getFileParam param, const char *fi
     param0.fileId = param.fileId;
     param0.fileType = param.fileType;
 
-    size = 0;
     offset = 0;
     downloaded = 0;
 
@@ -134,7 +132,7 @@ static size_t _getPartialFile(xmdsConfig cfg, getFileParam param, const char *fi
     unlink(outname);
     if(param.chuckSize >= partial_chunk) {
         while(offset < param.chuckSize) {
-            if(offset + size > param.chuckSize) {
+            if(offset + downloaded > param.chuckSize) {
                 break;
             }
             param0.chunkOffset = offset;
@@ -149,14 +147,16 @@ static size_t _getPartialFile(xmdsConfig cfg, getFileParam param, const char *fi
     }
 
     remaining = param.chuckSize - downloaded;
-    param0.chunkOffset = offset;
-    param0.chuckSize = remaining;
+    if(remaining > 0) {
+        param0.chunkOffset = offset;
+        param0.chuckSize = remaining;
 
-    resp = send_request(cfg.url, XMDS_GET_FILE, &param0);
-    if(!resp || !resp->size) {
-        return downloaded;
+        resp = send_request(cfg.url, XMDS_GET_FILE, &param0);
+        if(!resp || !resp->size) {
+            return downloaded;
+        }
+        downloaded += _decodeAndSave(resp, outname);
     }
-    downloaded += _decodeAndSave(resp, outname);
     return downloaded;
 }
 
