@@ -8,6 +8,136 @@
 #include "xmds-util.h"
 #include "xmds.h"
 
+static int _configFindValue(const char *src, const char *key, int *v_start, int *v_end) {
+    int i, j, k;
+    int c;
+
+    /* key start index */
+    int k_start;
+
+    /* src length, key length */
+    int s_len, k_len;
+
+    /* strlen(key) */
+    if(key)
+        for(k_len = 0; key[k_len] != '\0'; k_len++);
+    else
+        return 0;
+    /* strlen(src) */
+    if(src)
+        for(s_len = 0; src[s_len] != '\0'; s_len++);
+    else
+        return 0;
+
+    *v_start = *v_end = 0;
+    i = 0;
+    while((c = src[i++]) != '\0' && i < s_len) {
+        /* skip preceeding spaces after last newline */
+        if(c == ' ' || c == '\t' || c == '\r')
+            continue;
+
+        /* skip comment line after last newline */
+        if(c == '#') {
+            while((c = src[i++]) != '\n');
+            continue;
+        }
+
+        /* strstr(data, key)
+         * find occurence of key inside data.
+         * j == k_len if found, (i - 1) is the index of the key.
+        */
+        for(j = 0; j < k_len; j++) {
+            if(src[i + j - 1] != key[j]) {
+                break;
+            }
+        }
+
+        /* found */
+        if(j == k_len) {
+            k_start = i - 1;
+            while((c = src[i++]) != '\n') {
+                /* last line that doesn't have a terminating newline */
+                if(c == '\0')
+                    break;
+            }
+
+            *v_end = i - 1;
+            for(k = k_start + k_len; k < *v_end; k++) {
+                c = src[k];
+                /* delimiters */
+                if(c == ' ' || c == '\t' || c == '=')
+                    continue;
+                *v_start = k;
+                break;
+            }
+
+            /* strip trailing spaces */
+            k = *v_end;
+            while((c = src[--k])) {
+                if(c == ' ' || c == '\t' || c == '\r')
+                    continue;
+                else {
+                    *v_end = ++k;
+                    break;
+                }
+            }
+            break;
+        } else {
+            /* not found, skip until the next new line. */
+            while((c = src[i++]) != '\n' && i < s_len);
+        }
+    }
+
+    return *v_end - *v_start;
+}
+
+static char *_configGetString(const char *src, const char *key) {
+    int start, end, len;
+    char *dst;
+    int i;
+
+    dst = NULL;
+    len = _configFindValue(src, key, &start, &end);
+    if(len > 0) {
+        dst = malloc(len + 1);
+        dst[len] = '\0';
+        /* copy src[start] to src[end] -> dst */
+        for(i = 0;
+            i < len && (dst[i] = *(src + start + i));
+            i++);
+
+    }
+
+    return dst;
+}
+
+static double _configGetNumber(const char *src, const char *key) {
+    char *value;
+    double num;
+
+    value = NULL;
+    value = _configGetString(src, key);
+    num = atof(value);
+    free(value);
+    return num;
+}
+
+static double _configGetSeconds(const char *src, const char *key) {
+    char *value;
+    char *unit;
+    double num;
+
+    value = _configGetString(src, key);
+    num = strtod(value, &unit);
+
+    if(unit[0] == 'h' || unit[0] == 'H')
+        num *= 3600;
+    else if(unit[0] == 'm' || unit[0] == 'm')
+        num *= 60;
+
+    free(value);
+    return num;
+}
 
 void xmdsConfigInit(xmdsConfig *cfg) {
     cfg->url = NULL;
@@ -17,6 +147,22 @@ void xmdsConfigInit(xmdsConfig *cfg) {
     cfg->maxChunk = XMDS_MAX_CHUNK;
     cfg->collectInterval = XMDS_COLLECT_INTERVAL;
     cfg->cmsTzOffset = 0;
+}
+
+int xmdsConfigParse(xmdsConfig *cfg, const char *src) {
+
+    cfg->url = _configGetString(src, "url");
+    cfg->serverKey = _configGetString(src, "serverKey");
+    cfg->hardwareKey = _configGetString(src, "hardwareKey");
+    cfg->saveDir = _configGetString(src, "saveDir");
+    cfg->maxChunk = _configGetNumber(src, "maxChunk");
+    cfg->collectInterval = _configGetSeconds(src, "collectInterval");
+    cfg->cmsTzOffset = _configGetSeconds(src, "cmsTzOffset");
+
+    return (cfg->url &&
+            cfg->serverKey &&
+            cfg->hardwareKey &&
+            cfg->saveDir);
 }
 
 void xmdsConfigFree(xmdsConfig *cfg) {

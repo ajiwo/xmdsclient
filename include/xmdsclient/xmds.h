@@ -14,15 +14,16 @@ typedef struct _xmdsConfig {
     unsigned long collectInterval;  /*!< default collectInterval when CMS is unreachable */
 } xmdsConfig;
 
-#define XMDS_MAX_CHUNK 1234567
-#define XMDS_COLLECT_INTERVAL 5
-void xmdsConfigInit(xmdsConfig *cfg);
-void xmdsConfigFree(xmdsConfig *cfg);
-
-
 #ifdef	__cplusplus
 extern "C" {
 #endif
+
+#define XMDS_MAX_CHUNK 1234567
+#define XMDS_COLLECT_INTERVAL 5
+void xmdsConfigInit(xmdsConfig *cfg);
+int xmdsConfigParse(xmdsConfig *cfg, const char *src);
+void xmdsConfigFree(xmdsConfig *cfg);
+
 
 /* version */
 #define XMDSCLIENT_VER_MAJOR 0
