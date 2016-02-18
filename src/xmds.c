@@ -119,6 +119,7 @@ static size_t _getPartialFile(xmdsConfig cfg, getFileParam param, const char *fi
 
     offset = 0;
     downloaded = 0;
+    remaining = param.chuckSize;
 
     partial_chunk = cfg.maxChunk ? cfg.maxChunk : XMDS_MAX_CHUNK;
 
@@ -131,22 +132,19 @@ static size_t _getPartialFile(xmdsConfig cfg, getFileParam param, const char *fi
     /* TODO: instead of deleting, add option to overwrite or continue last failed download */
     unlink(outname);
     if(param.chuckSize >= partial_chunk) {
-        while(offset < param.chuckSize) {
-            if(offset + downloaded > param.chuckSize) {
-                break;
-            }
+        while(downloaded < param.chuckSize) {
             param0.chunkOffset = offset;
-            param0.chuckSize = partial_chunk;
+            param0.chuckSize = partial_chunk < remaining ? partial_chunk : remaining;
             resp = send_request(cfg.url, XMDS_GET_FILE, &param0);
             if(!resp || !resp->size) {
                 break;
             }
             downloaded += _decodeAndSave(resp, outname);
             offset += partial_chunk;
+            remaining = param.chuckSize - downloaded;
         }
     }
 
-    remaining = param.chuckSize - downloaded;
     if(remaining > 0) {
         param0.chunkOffset = offset;
         param0.chuckSize = remaining;
