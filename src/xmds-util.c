@@ -5,6 +5,44 @@
 #include "mbedtls-md5.h"
 
 
+size_t file_get_size(FILE *file) {
+    size_t pos, len;
+
+    len = 0;
+    if(file && (pos = ftell(file)) != -1) {
+        len = !fseek(file, 0, SEEK_END) ? ftell(file) : 0;
+        fseek(file, pos, SEEK_SET);
+    }
+
+    return len;
+}
+
+unsigned char *file_get_contents(size_t *len, const char *path) {
+    FILE *file;
+    size_t i;
+    int c;
+    unsigned char *data;
+
+    i = 0, *len = 0;
+    data = NULL;
+    file = fopen(path, "r");
+    if(file) {
+        *len = file_get_size(file);
+
+        if(*len > 0)
+            data = malloc(*len + 1);
+
+        if(data) {
+            for(;i < *len && (c = fgetc(file)) != EOF; data[i++] = c);
+            data[*len] = '\0';
+        }
+
+        fclose(file);
+    }
+
+    return data;
+}
+
 char *str_duplicate(const char *src) {
     size_t len;
     char *dst;
