@@ -8,7 +8,7 @@
 #include "xmds-util.h"
 #include "xmds.h"
 
-static int _configFindValue(const char *src, const char *key, int *v_start, int *v_end) {
+int configFindValue(const char *src, const char *key, int *v_start, int *v_end) {
     int i, j, k;
     int c;
 
@@ -97,7 +97,7 @@ static char *_configGetString(int *len, const char *src, const char *key) {
     int i;
 
     dst = NULL;
-    *len = _configFindValue(src, key, &start, &end);
+    *len = configFindValue(src, key, &start, &end);
     if(*len > 0) {
         dst = malloc(*len + 1);
         dst[*len] = '\0';

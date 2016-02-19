@@ -20,6 +20,7 @@ extern "C" {
 
 #define XMDS_MAX_CHUNK 1234567
 #define XMDS_COLLECT_INTERVAL 5
+int configFindValue(const char *src, const char *key, int *v_start, int *v_end);
 void xmdsConfigInit(xmdsConfig *cfg);
 int xmdsConfigParse(xmdsConfig *cfg, const char *src);
 void xmdsConfigFree(xmdsConfig *cfg);
