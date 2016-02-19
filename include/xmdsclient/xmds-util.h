@@ -1,6 +1,6 @@
 #ifndef XMDS_UTIL_H
 #define XMDS_UTIL_H
-#include <stddef.h>
+#include <stdio.h>
 
 #ifdef	__cplusplus
 extern "C" {
