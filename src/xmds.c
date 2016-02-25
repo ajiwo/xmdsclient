@@ -465,7 +465,7 @@ size_t xmdsGetResourceFile(xmdsConfig cfg, int layout, const char *media, const 
     param.regionId = region;
 
     if(path) {
-        sprintf(outname, "%s/%s", cfg.saveDir, path);
+        sprintf(outname, "%s", path);
     } else {
         sprintf(outname, "%s/%s.rsc", cfg.saveDir, param.mediaId);
     }

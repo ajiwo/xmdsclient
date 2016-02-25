@@ -233,6 +233,29 @@ void *build_reqfiles_response(xmlNode *response_node) {
             xmlFree(xtmp);
         }
 
+        if(!strcmp(entry.type, "resource")) {
+            xtmp = xmlGetProp(node, BAD_CAST "layoutid");
+            if(xtmp) {
+                entry.layoutid = atoi((char *) xtmp);
+                xmlFree(xtmp);
+            }
+            xtmp = xmlGetProp(node, BAD_CAST "regionid");
+            if(xtmp) {
+                entry.regionid = str_duplicate((const char *) xtmp);
+                xmlFree(xtmp);
+            }
+            xtmp = xmlGetProp(node, BAD_CAST "mediaid");
+            if(xtmp) {
+                entry.mediaid = str_duplicate((const char *) xtmp);
+                xmlFree(xtmp);
+            }
+            xtmp = xmlGetProp(node, BAD_CAST "updated");
+            if(xtmp) {
+                entry.updated = atol((char *) xtmp);
+                xmlFree(xtmp);
+            }
+        }
+
         requiredFilesEntry_add(&entry_node, entry);
         node = node->next;
     }

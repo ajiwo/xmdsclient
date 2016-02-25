@@ -10,6 +10,12 @@ static void set_rfiles_entry_value(requiredFilesEntry *dst, requiredFilesEntry s
     dst->md5 = src.md5;
     dst->download = src.download;
     dst->path = src.path;
+    if(!strcmp(src.type, "resource")) {
+        dst->layoutid = src.layoutid;
+        dst->regionid = src.regionid;
+        dst->mediaid = src.mediaid;
+        dst->updated = src.updated;
+    }
 }
 
 xmdsNode *requiredFilesEntry_new() {
@@ -50,11 +56,16 @@ int requiredFilesEntry_delete_last(xmdsNode **node) {
     last = (*node)->last;
     entry = last->data;
 
+    if(!strcmp(entry->type, "resource")) {
+        free(entry->regionid);
+        free(entry->mediaid);
+    }
     free(entry->type);
     free(entry->id);
     free(entry->md5);
     free(entry->download);
     free(entry->path);
+
 
     free(entry);
     entry = NULL;

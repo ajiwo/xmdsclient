@@ -140,6 +140,11 @@ typedef struct _requiredFilesEntry {
     char *md5;
     char *download;
     char *path;
+    /* for resource files */
+    int layoutid;
+    char *regionid;
+    char *mediaid;
+    long updated;
 } requiredFilesEntry;
 
 /*
